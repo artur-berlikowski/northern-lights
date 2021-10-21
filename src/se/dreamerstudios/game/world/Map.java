@@ -2,43 +2,37 @@ package se.dreamerstudios.game.world;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.geom.Rectangle;
 
 public class Map {
-    private final int GRID_WIDTH = 64;
-    private final int GRID_HEIGHT = 64;
+    public final int GRID_WIDTH = 64;
+    public final int GRID_HEIGHT = 64;
 
-    private Grid grid;
-
-    private String mapPath;
+    private final Grid grid;
 
     private float xOffs, yOffs;
 
     public Map() {
-        mapPath = null;
         grid = new Grid(GRID_WIDTH,GRID_HEIGHT);
     }
 
-    public Map(String mapPath) {
-        this();
-        setMapPath(mapPath);
-    }
-
-    public void init(GameContainer gc, StateBasedGame sbg) {
-        grid.init(gc, sbg);
+    public void init(GameContainer gc) {
+        grid.init(gc);
         xOffs = grid.getXOffs();
         yOffs = grid.getYOffs();
     }
 
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
-        grid.render(gc, sbg, g);
+    public void render(Graphics g) {
+        grid.render(g);
     }
 
-    public void update(GameContainer gc, StateBasedGame sbg, int delta) {
-        grid.update(gc, sbg, delta);
+    public void update() {
+        grid.update();
     }
 
-    private void setMapPath(String mapPath) { this.mapPath = mapPath; }
+    public Rectangle getMouseOverTile(int mouseX, int mouseY) {
+        return grid.mouseOver(mouseX,mouseY);
+    }
 
     public void setXOffs(float xOffs) {
         this.xOffs = xOffs;

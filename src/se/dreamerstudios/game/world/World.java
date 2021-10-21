@@ -3,45 +3,59 @@ package se.dreamerstudios.game.world;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class World extends BasicGameState {
     private final int ID;
 
-    private Map map;
+    private final Map map;
+
+    private Rectangle mouseOverTile;
 
     private float speed, xOffs, yOffs;
 
+    private int mouseX, mouseY;
+
     public World(int id) {
         ID=id;
-
         map = new Map();
     }
 
     @Override
-    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        map.init(gc,sbg);
-        speed = 2f;
-        xOffs = map.getXOffs();
+    public void init(GameContainer gc, StateBasedGame sbg) {
+        map.init(gc);
+
+        setSpeed(2f);
+        setXOffs(map.getXOffs());
+        setYOffs(map.getYOffs());
     }
 
     @Override
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-        map.render(gc,sbg, g);
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
+        map.render(g);
+        if(getMouseOverTile() != null) {
+            Rectangle tile = getMouseOverTile();
+            g.fillRect(tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
+        }
     }
 
     @Override
-    public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+    public void update(GameContainer gc, StateBasedGame sbg, int delta) {
         Input input = gc.getInput();
 
-        if(input.isKeyDown(Input.KEY_W)) { moveUp(speed); }
-        if(input.isKeyDown(Input.KEY_S)) { moveDown(speed); }
-        if(input.isKeyDown(Input.KEY_A)) { moveLeft(speed); }
-        if(input.isKeyDown(Input.KEY_D)) { moveRight(speed); }
+        setMouseX(input.getMouseX());
+        setMouseY(input.getMouseY());
 
-        map.update(gc,sbg,delta);
+        if(input.isKeyDown(Input.KEY_W)) { moveUp(getSpeed()); }
+        if(input.isKeyDown(Input.KEY_S)) { moveDown(getSpeed()); }
+        if(input.isKeyDown(Input.KEY_A)) { moveLeft(getSpeed()); }
+        if(input.isKeyDown(Input.KEY_D)) { moveRight(getSpeed()); }
+
+        map.update();
+
+        setMouseOverTile(map.getMouseOverTile(getMouseX(), getMouseY()));
     }
 
     private void moveUp(float speed) {
@@ -64,11 +78,19 @@ public class World extends BasicGameState {
         map.setXOffs(getXOffs());
     }
 
+    public void setMouseOverTile(Rectangle mouseOverTile) { this.mouseOverTile = mouseOverTile; }
+    public void setSpeed(float speed) { this.speed = speed; }
     public void setXOffs(float xOffs) { this.xOffs = xOffs; }
     public void setYOffs(float yOffs) { this.yOffs = yOffs; }
+    public void setMouseX(int mouseX) { this.mouseX = mouseX; }
+    public void setMouseY(int mouseY) { this.mouseY = mouseY; }
 
+    public Rectangle getMouseOverTile() { return mouseOverTile; }
+    public float getSpeed() { return speed; }
     public float getXOffs() { return xOffs; }
     public float getYOffs() { return yOffs; }
+    public int getMouseX() { return mouseX; }
+    public int getMouseY() { return mouseY; }
 
     @Override
     public int getID() {
