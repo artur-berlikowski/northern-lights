@@ -23,20 +23,15 @@ public class Grid {
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
         drawTiles(g);
-        if(mouseOver != null) {
-            g.fillRect(mouseOver.getMinX(), mouseOver.getMinY(), mouseOver.getWidth(), mouseOver.getHeight());
-        }
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int delta) {
         Input input = gc.getInput();
 
-        int mouseX = input.getAbsoluteMouseX();
-        int mouseY = input.getAbsoluteMouseY();
+        setMouseX(input.getMouseX());
+        setMouseY(input.getMouseY());
 
         createTiles();
-
-        mouseOver = mouseOverTile();
     }
 
     private void createTiles() {

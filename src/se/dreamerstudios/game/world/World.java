@@ -23,7 +23,7 @@ public class World extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         map.init(gc,sbg);
-        speed = 1f;
+        speed = 2f;
         xOffs = map.getXOffs();
     }
 
