@@ -1,4 +1,4 @@
-package se.dreamerstudios.game.world;
+package se.dreamerstudios.game.map;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -30,7 +30,7 @@ public class Map {
         grid.update();
     }
 
-    public Rectangle getMouseOverTile(int mouseX, int mouseY) {
+    public Tile getMouseOverTile(int mouseX, int mouseY) {
         return grid.mouseOver(mouseX,mouseY);
     }
 

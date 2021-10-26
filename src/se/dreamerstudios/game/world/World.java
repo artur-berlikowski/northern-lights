@@ -3,16 +3,17 @@ package se.dreamerstudios.game.world;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import se.dreamerstudios.game.map.Map;
+import se.dreamerstudios.game.map.Tile;
 
 public class World extends BasicGameState {
     private final int ID;
 
     private final Map map;
 
-    private Rectangle mouseOverTile;
+    private Tile mouseOverTile;
 
     private float speed, xOffs, yOffs;
 
@@ -36,8 +37,8 @@ public class World extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
         map.render(g);
         if(getMouseOverTile() != null) {
-            Rectangle tile = getMouseOverTile();
-            g.fillRect(tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
+            Tile tile = getMouseOverTile();
+            g.fillRect(tile.getXOffs(), tile.getYOffs(), tile.getWidth(), tile.getHeight());
         }
     }
 
@@ -78,14 +79,14 @@ public class World extends BasicGameState {
         map.setXOffs(getXOffs());
     }
 
-    public void setMouseOverTile(Rectangle mouseOverTile) { this.mouseOverTile = mouseOverTile; }
+    public void setMouseOverTile(Tile mouseOverTile) { this.mouseOverTile = mouseOverTile; }
     public void setSpeed(float speed) { this.speed = speed; }
     public void setXOffs(float xOffs) { this.xOffs = xOffs; }
     public void setYOffs(float yOffs) { this.yOffs = yOffs; }
     public void setMouseX(int mouseX) { this.mouseX = mouseX; }
     public void setMouseY(int mouseY) { this.mouseY = mouseY; }
 
-    public Rectangle getMouseOverTile() { return mouseOverTile; }
+    public Tile getMouseOverTile() { return mouseOverTile; }
     public float getSpeed() { return speed; }
     public float getXOffs() { return xOffs; }
     public float getYOffs() { return yOffs; }
