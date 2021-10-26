@@ -4,7 +4,8 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import se.dreamerstudios.game.world.World;
+import se.dreamerstudios.game.constant.State;
+import se.dreamerstudios.game.state.Editor;
 
 public class NorthernLights  extends StateBasedGame {
     private final static String NAME = "Northern Lights";
@@ -21,7 +22,7 @@ public class NorthernLights  extends StateBasedGame {
     private final static boolean UPDATE_ONLY_WHEN_VISIBLE = true;
     private final static boolean ALWAYS_RENDER = false;
     private final static boolean CLEAR_EACH_FRAME = true;
-    private final static boolean SHOW_FPS = true;
+    private final static boolean SHOW_FPS = false;
     private final static boolean SMOOTH_DELTAS = true;
     private final static boolean LOGGING = false;
     private final static boolean VSYNC = false;
@@ -32,7 +33,8 @@ public class NorthernLights  extends StateBasedGame {
 
     @Override
     public void initStatesList(GameContainer gameContainer) {
-        addState(new World(0));
+        addState(new Editor(State.EDITOR.id));
+
         enterState(0);
     }
 
