@@ -2,18 +2,23 @@ package se.dreamerstudios.game.map;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.Input;
 
 public class Grid {
     private Tile[][] tiles;
-    private float xOffs, yOffs;
+    private Tile mouseOver;
+    private float xOffs, yOffs, mouseX, mouseY;
     private int width, height, tilesX, tilesY;
 
     public void init(GameContainer gc) {
+        setTiles(null);
+        setMouseOver(null);
         setTilesX((gc.getWidth() / width) + (gc.getWidth() % width > 0 ? 2 : 0));
         setTilesY((gc.getHeight() / height) + (gc.getHeight() % height > 0 ? 2 : 0));
         setXOffs(gc.getWidth() - (width * tilesX));
         setYOffs(gc.getHeight() - (height * tilesY));
+        setMouseY(0);
+        setMouseX(0);
         createTiles();
     }
 
@@ -21,8 +26,15 @@ public class Grid {
         drawTiles(g);
     }
 
-    public void update() {
+    public void update(GameContainer gc) {
+        Input input = gc.getInput();
+
+        setMouseX(input.getMouseX());
+        setMouseY(input.getMouseY());
+
         createTiles();
+
+        setMouseOver(getMouseOver(mouseX,mouseY));
     }
 
     private void createTiles() {
@@ -46,7 +58,7 @@ public class Grid {
         }
     }
 
-    public Tile mouseOver(int mouseX, int mouseY) {
+    private Tile getMouseOver(float mouseX, float mouseY) {
         Tile mouseOver = null;
         for(int y = 0; y < getTilesY(); y++) {
             for(int x = 0; x < getTilesX(); x++) {
@@ -88,6 +100,18 @@ public class Grid {
         this.yOffs = yOffs;
     }
 
+    public float getMouseX() {
+        return mouseX;
+    }
+
+    public float getMouseY() {
+        return mouseY;
+    }
+
+    public Tile getMouseOver() {
+        return mouseOver;
+    }
+
     public void setTilesX(int tilesX) {
         this.tilesX = tilesX;
     }
@@ -122,5 +146,17 @@ public class Grid {
 
     public int getTilesY() {
         return tilesY;
+    }
+
+    private void setMouseX(float mouseX) {
+        this.mouseX = mouseX;
+    }
+
+    private void setMouseY(float mouseY) {
+        this.mouseY = mouseY;
+    }
+
+    private void setMouseOver(Tile mouseOver) {
+        this.mouseOver = mouseOver;
     }
 }
