@@ -7,16 +7,18 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import se.dreamerstudios.game.constant.Direction;
 import se.dreamerstudios.game.constant.Orientation;
+import se.dreamerstudios.game.utility.Margin;
+import se.dreamerstudios.game.utility.Padding;
 
 public class EditorGUIBuilder {
-    private GUI gui;
+    private final GUI gui;
 
     public EditorGUIBuilder() {
         gui = new GUI();
     }
 
     private void build() {
-        Container container = new Container(Orientation.CENTER, Orientation.CENTER, Direction.VERTICAL);
+        Container container = new Container(Orientation.CENTER, Orientation.CENTER, Direction.VERTICAL, new Margin(0), new Padding(16), 16);
 
         Label label1 = new Label("Hello Container!");
         Label label2 = new Label("Hello Next Row!");

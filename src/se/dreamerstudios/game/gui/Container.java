@@ -6,16 +6,26 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import se.dreamerstudios.game.constant.Direction;
 import se.dreamerstudios.game.constant.Orientation;
+import se.dreamerstudios.game.utility.Margin;
+import se.dreamerstudios.game.utility.Padding;
 
 
 public class Container extends GUIComponent {
     private Orientation orientation, contentOrientation;
     private Direction direction;
 
-    public Container(Orientation orientation, Orientation contentOrientation, Direction direction) {
+    private Margin margin;
+    private Padding padding;
+
+    private int spacing;
+
+    public Container(Orientation orientation, Orientation contentOrientation, Direction direction, Margin margin, Padding padding, int spacing) {
         setOrientation(orientation);
         setContentOrientation(contentOrientation);
         setDirection(direction);
+        setMargin(margin);
+        setPadding(padding);
+        setSpacing(spacing);
     }
 
     @Override
@@ -49,31 +59,52 @@ public class Container extends GUIComponent {
         this.direction = direction;
     }
 
+    public void setPadding(Padding padding) {
+        this.padding = padding;
+    }
+
+    public void setMargin(Margin margin) {
+        this.margin = margin;
+    }
+
+    public void setSpacing(int spacing) {
+        this.spacing = spacing;
+    }
+
     //Adjust the total width and height of the container based on the content, and it's direction.
     private void adjustDimensions() {
         float totalWidth = 0;
         float totalHeight = 0;
 
         for(GUIComponent component : getComponents()) {
+            //Check if the need to add spacing exists
+            boolean addSpacing = getComponents().indexOf(component) > 0 && getComponents().indexOf(component) < getComponents().size();
+
+            //If direction is horizontal
             if(direction == Direction.HORIZONTAL) {
                 totalWidth += component.getWidth();
                 if(totalHeight < component.getHeight()) totalHeight = component.getHeight();
+                //Add spacing to total width
+                if (addSpacing) totalWidth += spacing;
+            //If direction is vertical
             } else if(direction == Direction.VERTICAL) {
                 totalHeight += component.getHeight();
                 if(totalWidth < component.getWidth()) totalWidth = component.getWidth();
+                //Add spacing to total height
+                if(addSpacing) totalHeight += spacing;
             }
         }
 
-        setWidth(totalWidth);
-        setHeight(totalHeight);
+        setWidth(totalWidth + padding.left + padding.right);
+        setHeight(totalHeight + padding.top + padding.bottom);
     }
 
     //Adjust container offsets based on the orientation
     private void adjustOffsets(int screenWidth, int screenHeight) {
         switch(orientation) {
             case CENTER -> {
-                setXOffs((screenWidth - getWidth()) / 2);
-                setYOffs((screenHeight - getHeight()) / 2);
+                setXOffs((screenWidth - (getWidth() + padding.left + padding.right)) / 2);
+                setYOffs((screenHeight - getHeight() + padding.top + padding.bottom) / 2);
                 adjustComponentOffsets();
             }
         }
@@ -84,12 +115,22 @@ public class Container extends GUIComponent {
         float nextX = getXOffs();
         float nextY = getYOffs();
 
+        switch(direction) {
+            case VERTICAL -> nextY += padding.top;
+        }
+
         for(GUIComponent component : getComponents()) {
+            //Check the need to add spacing
+            boolean addSpacing = getComponents().indexOf(component) < getComponents().size();
+
             switch (direction) {
+                //If direction is vertical
                 case VERTICAL -> {
                     component.setXOffs((int)(nextX + (contentOrientation == Orientation.CENTER ? ((getWidth() - component.getWidth()) / 2) : 0)));
                     component.setYOffs(nextY);
                     nextY += component.getHeight();
+                    //Add spacing to yOffs
+                    if(addSpacing) nextY += spacing;
                 }
             }
         }
