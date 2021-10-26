@@ -31,9 +31,8 @@ public class NorthernLights  extends StateBasedGame {
     }
 
     @Override
-    public void initStatesList(GameContainer gameContainer) throws SlickException {
+    public void initStatesList(GameContainer gameContainer) {
         addState(new World(0));
-
         enterState(0);
     }
 

@@ -2,18 +2,14 @@ package se.dreamerstudios.game.world;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.state.StateBasedGame;
 
 public class Grid {
     private Rectangle[][] tiles;
-    private Rectangle mouseOver;
     private float xOffs, yOffs;
-    private int width, height, tilesX, tilesY, mouseX, mouseY;
+    private int width, height, tilesX, tilesY;
 
-    public void init(GameContainer gc, StateBasedGame sbg) {
-        mouseOver = null;
+    public void init(GameContainer gc) {
         setTilesX((gc.getWidth() / width) + (gc.getWidth() % width > 0 ? 2 : 0));
         setTilesY((gc.getHeight() / height) + (gc.getHeight() % height > 0 ? 2 : 0));
         setXOffs(gc.getWidth() - (width * tilesX));
@@ -21,22 +17,12 @@ public class Grid {
         createTiles();
     }
 
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
+    public void render(Graphics g) {
         drawTiles(g);
-        if(mouseOver != null) {
-            g.fillRect(mouseOver.getMinX(), mouseOver.getMinY(), mouseOver.getWidth(), mouseOver.getHeight());
-        }
     }
 
-    public void update(GameContainer gc, StateBasedGame sbg, int delta) {
-        Input input = gc.getInput();
-
-        int mouseX = input.getAbsoluteMouseX();
-        int mouseY = input.getAbsoluteMouseY();
-
+    public void update() {
         createTiles();
-
-        mouseOver = mouseOverTile();
     }
 
     private void createTiles() {
@@ -60,12 +46,12 @@ public class Grid {
         }
     }
 
-    private Rectangle mouseOverTile() {
+    public Rectangle mouseOver(int mouseX, int mouseY) {
         Rectangle mouseOver = null;
         for(int y = 0; y < getTilesY(); y++) {
             for(int x = 0; x < getTilesX(); x++) {
                 Rectangle tile = getTiles()[y][x];
-                if(getMouseX() >= tile.getMinX() && getMouseY() >= tile.getMinY() && getMouseX() <= tile.getMaxX() && getMouseY() <= tile.getMaxY()) {
+                if(mouseX >= tile.getMinX() && mouseY >= tile.getMinY() && mouseX <= tile.getMaxX() && mouseY <= tile.getMaxY()) {
                     mouseOver = tile;
                 }
             }
@@ -80,18 +66,6 @@ public class Grid {
         setYOffs(0);
         setTilesX(0);
         setTilesY(0);
-    }
-
-    public Grid(int width, int height, int xOffs, int yOffs) {
-        this(width,height);
-        setXOffs(xOffs);
-        setYOffs(yOffs);
-    }
-
-    public Grid(int width, int height, int xOffs, int yOffs, int tilesX, int tilesY) {
-        this(width, height, xOffs, yOffs);
-        setTilesX(tilesX);
-        setTilesY(tilesY);
     }
 
     public void setTiles(Rectangle[][] tiles) {
@@ -122,14 +96,6 @@ public class Grid {
         this.tilesY = tilesY;
     }
 
-    public void setMouseX(int mouseX) {
-        this.mouseX = mouseX;
-    }
-
-    public void setMouseY(int mouseY) {
-        this.mouseY = mouseY;
-    }
-
     public Rectangle[][] getTiles() {
         return tiles;
     }
@@ -156,13 +122,5 @@ public class Grid {
 
     public int getTilesY() {
         return tilesY;
-    }
-
-    public int getMouseX() {
-        return mouseX;
-    }
-
-    public int getMouseY() {
-        return mouseY;
     }
 }
