@@ -22,7 +22,7 @@ public class Editor extends GameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        gc.setDefaultFont(FontLoader.loadFont("resource/font/ubuntu-mono/ubuntu-mono-regular.ttf", Font.TRUETYPE_FONT, 14));
+        gc.setDefaultFont(FontLoader.loadTrueTypeFont("resource/font/ubuntu-mono/ubuntu-mono-bold.ttf", Font.BOLD, 14));
         map.init(gc, sbg);
         gui.init(gc, sbg);
     }

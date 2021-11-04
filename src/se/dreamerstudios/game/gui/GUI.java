@@ -1,38 +1,34 @@
 package se.dreamerstudios.game.gui;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import java.util.ArrayList;
-
 public class GUI {
-    private ArrayList<GUIComponent> components;
+    private GUIComponent gui;
 
-    public GUI() {
-        components = new ArrayList<>();
+    public GUI(float width, float height, float xOffs, float yOffs) {
+        gui = new GUIComponent(width,height,xOffs,yOffs);
     }
 
-    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        for(GUIComponent component : components) { component.init(gc, sbg); }
+    public void init(GameContainer gc, StateBasedGame sbg) {
+        gui.init(gc, sbg);
     }
 
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-        for(GUIComponent component : components) { component.render(gc, sbg, g); }
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
+        gui.render(gc, sbg, g);
     }
 
-    public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-        for(GUIComponent component : components) { component.update(gc, sbg, delta); }
+    public void update(GameContainer gc, StateBasedGame sbg, int delta) {
+        gui.update(gc, sbg, delta);
     }
 
-    public void addComponent(GUIComponent component) {
-        components.add(component);
+    public void add(GUIComponent component) {
+        gui.add(component);
     }
 
-    public void removeComponent(GUIComponent component) {
-        components.remove(component);
+    public void setBackgroundColor(Color backgroundColor) {
+        gui.setBackgroundColor(backgroundColor);
     }
-
-    public ArrayList<GUIComponent> getComponents() { return components; }
 }
