@@ -4,6 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import se.dreamerstudios.game.constant.Orientation;
 
 public class EditorGUIBuilder {
     private GUI gui;
@@ -23,6 +24,13 @@ public class EditorGUIBuilder {
 
     private void build(GameContainer gc) {
         gui = new GUI(gc.getWidth(),gc.getHeight(),0,0);
+
+        Container container = new Container(100,100,0,0);
+
+        container.setBackgroundColor(Color.white);
+        container.setOrientation(Orientation.CENTER);
+
+        gui.add(container);
 
         gui.setBackgroundColor(Color.red);
     }

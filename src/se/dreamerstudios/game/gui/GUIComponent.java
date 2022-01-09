@@ -29,19 +29,42 @@ public class GUIComponent {
     }
 
     public void init(GameContainer gc, StateBasedGame sbg) {
-        if(getParent() != null && orientation == Orientation.AUTO) setOrientation(Orientation.INHERIT);
-        for(GUIComponent component : getComponents()) component.init(gc, sbg);
+        if(parent != null) {
+            //Inherit orientation
+            if(orientation == Orientation.INHERIT) setOrientation(parent.orientation);
+            //Adjust offsets based on orientation
+            switch (orientation) {
+                case AUTO, TOP, LEFT -> {
+                    setXOffs(parent.xOffs);
+                    setYOffs(parent.yOffs);
+                }
+                case RIGHT -> {
+                    setXOffs(parent.xOffs + parent.width - width);
+                    setYOffs(parent.yOffs);
+                }
+                case BOTTOM -> {
+                    setXOffs(parent.xOffs);
+                    setYOffs(parent.yOffs + parent.height - height);
+                }
+                case CENTER -> {
+                    setXOffs(parent.xOffs + ((parent.width- width) / 2));
+                    setYOffs(parent.yOffs + ((parent.height - height) / 2));
+                }
+            }
+        }
+        for(GUIComponent component : components) component.init(gc, sbg);
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
         Color current = g.getColor();
-        if(getBackgroundColor() != null) g.setColor(getBackgroundColor());
-        g.fillRect(xOffs,yOffs,width,height);
+        if(backgroundColor != null) g.setColor(backgroundColor);
+        g.fillRect(xOffs, yOffs, width, height);
         g.setColor(current);
         for(GUIComponent component : getComponents()) component.render(gc, sbg, g);
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int delta) {
+        if(getOrientation() == Orientation.INHERIT) setOrientation(getParent().getOrientation());
         for(GUIComponent component : getComponents()) component.update(gc, sbg, delta);
     }
 
